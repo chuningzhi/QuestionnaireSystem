@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.cnzgr.dao.AnswerDao">
+
+    <insert id="addAnswer" parameterType="Answer">
+        insert into answer_table(answer,question_id) values(#{answer},#{question_id})
+    </insert>
+    
+    <select id="findAnswerByQuestion_id" parameterType="int" resultType="Answer">
+        select * from answer_table where question_id = #{question_id}
+    </select>
+
+    <delete id="deleAnswerByQuestionId" parameterType="int">
+        delete from answer_table where question_id = #{question_id}
+    </delete>
+</mapper>

@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.cnzgr.dao.QuesDao">
+
+    <resultMap id="questionMap" type="Question">
+        <id property="question_id" column="question_id"/>
+        <result property="question" column="question"/>
+        <result property="A" column="A"/>
+        <result property="B" column="B"/>
+        <result property="C" column="C"/>
+        <result property="D" column="D"/>
+        <result property="question_type" column="question_type"/>
+        <result property="que_num" column="que_num"/>
+        <result property="paper_id" column="paper_id"/>
+        <collection property="answers" select="xyz.cnzgr.dao.AnswerDao.findAnswerByQuestion_id" column="question_id"/>
+    </resultMap>
+    <select id="findAllQuesByPaperId" parameterType="int" resultMap="questionMap">
+        select * from question_table where paper_id = #{paper_id}
+    </select>
+
+    <insert id="addPaper" parameterType="Paper">
+        insert into paper_table(teacher_id,paper_name) value (#{teacher_id},#{paper_name})
+    </insert>
+
+
+    <update id="updateQuestion" parameterType="Question">
+        update question_table set
+        <trim prefix="" suffix="" suffixOverrides=",">
+            <if test="question != null" >
+                question = #{question},
+            </if>
+            <if test="A != null" >
+                A = #{A},
+            </if>
+            <if test="B != null" >
+                B = #{B},
+            </if>
+            <if test="C != null" >
+                C = #{C},
+            </if>
+            <if test="D != null" >
+                D = #{D}
+            </if>
+        </trim>
+        <trim prefix="where" suffixOverrides="and" suffix="">
+            que_num = #{que_num} and paper_id = #{paper_id}
+        </trim>
+    </update>
+
+    <delete id="deleQuestion" parameterType="Question">
+        delete from question_table where que_num = #{que_num} and paper_id = #{paper_id}
+    </delete>
+
+    <update id="moveQuestion">
+        update question_table set que_num=#{i} where que_num = #{question.que_num} and paper_id = #{question.paper_id}
+    </update>
+    
+    
+    
+
+    
+    <insert id="addQuestion" parameterType="Question">
+        insert into question_table
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="question != null" >
+                question,
+            </if>
+            <if test="A != null" >
+                A,
+            </if>
+            <if test="B != null" >
+                B,
+            </if>
+            <if test="C != null" >
+                C,
+            </if>
+            <if test="D != null" >
+                D,
+            </if>
+            <if test="question_type != null" >
+                question_type,
+            </if>
+            <if test="que_num != null" >
+                que_num,
+            </if>
+            <if test="paper_id != null" >
+                paper_id
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="question != null" >
+                #{question},
+            </if>
+            <if test="A != null" >
+                #{A},
+            </if>
+            <if test="B != null" >
+                #{B},
+            </if>
+            <if test="C != null" >
+                #{C},
+            </if>
+            <if test="D != null" >
+                #{D},
+            </if>
+            <if test="question_type != null" >
+                #{question_type},
+            </if>
+            <if test="que_num != null" >
+                #{que_num},
+            </if>
+            <if test="paper_id != null" >
+                #{paper_id}
+            </if>
+        </trim>
+    </insert>
+</mapper>
